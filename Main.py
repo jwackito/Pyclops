@@ -13,7 +13,17 @@ class Main(wx.Frame):
         # begin wxGlade: Main.__init__
         kwds["style"] = wx.DEFAULT_FRAME_STYLE
         wx.Frame.__init__(self, *args, **kwds)
-        self.videodev = wx.Choice(self, -1, choices=["/dev/video0", "/dev/video1"])
+        devices = []
+        #a piece of crap
+        if os.path.exists("/dev/video0"):
+			devices.append("/dev/video0")
+        if os.path.exists("/dev/video1"):
+			devices.append("/dev/video1")
+        if os.path.exists("/dev/video2"):
+			devices.append("/dev/video2")
+        if os.path.exists("/dev/video3"):
+			devices.append("/dev/video3")
+        self.videodev = wx.Choice(self, -1, choices=devices)
         self.resolution = wx.Choice(self, -1, choices=["640x480", "1280x900"])
         self.button_1 = wx.Button(self, -1, "Capture")
 
@@ -23,11 +33,11 @@ class Main(wx.Frame):
         self.Bind(wx.EVT_CHOICE, self.printselection, self.videodev)
         self.Bind(wx.EVT_BUTTON, self.takeShot, self.button_1)
         # end wxGlade
-        self.camera = Camera
+        self.camera = Camera.Camera()
 
     def __set_properties(self):
         # begin wxGlade: Main.__set_properties
-        self.SetTitle("frame_1")
+        self.SetTitle("Pyclops")
         self.SetSize((640, 480))
         self.SetBackgroundColour(wx.Colour(109, 0, 0))
         self.SetForegroundColour(wx.Colour(109, 0, 0))
@@ -55,7 +65,7 @@ class Main(wx.Frame):
         event.Skip()
 
     def takeShot(self, event): # wxGlade: Main.<event_handler>
-        self.camera.takeShot(self.camera)
+        self.camera.takeShot()
         event.Skip()
 
 # end of class Main

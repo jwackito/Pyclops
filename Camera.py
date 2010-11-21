@@ -6,15 +6,15 @@ import sys
 
 import cv
 
-class Camara(object):
-	def __new__(self, device = "/dev/video0", fps = 15, width = 640, height = 480):
+class Camera:
+	def __init__(self, device = "/dev/video0", fps = 15, width = 640, height = 480):
 		''''''
-		self.camera = self.SetCamDevice(device)
+		self.SetCamDevice(device)
 		self.fps = fps
 		self.width = width
 		self.height = height
 		self.window = pygame.display.set_mode((width,height))
-		pygame.display.set_caption("Cyclops")
+		pygame.display.set_caption("Pyclops")
 		self.screen = pygame.display.get_surface()
 		
 	def SetCamDevice(self, device):
@@ -39,6 +39,7 @@ class Camara(object):
 
 	def takeShot(self):
 		im = self._get_image()
+		print im
 		pg_img = pygame.image.frombuffer(im.tostring(), cv.GetSize(im), "RGB")
 		self.screen.blit(pg_img, (0,0))
 		pygame.display.flip()
