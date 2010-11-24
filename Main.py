@@ -9,64 +9,88 @@ import Camera
 # end wxGlade
 
 class Main(wx.Frame):
-    def __init__(self, *args, **kwds):
-        # begin wxGlade: Main.__init__
-        kwds["style"] = wx.DEFAULT_FRAME_STYLE
-        wx.Frame.__init__(self, *args, **kwds)
-        devices = []
-        #a piece of crap
-        if os.path.exists("/dev/video0"):
+	def __init__(self, *args, **kwds):
+		devices = []
+		#a piece of crap
+		if os.path.exists("/dev/video0"):
 			devices.append("/dev/video0")
-        if os.path.exists("/dev/video1"):
+		if os.path.exists("/dev/video1"):
 			devices.append("/dev/video1")
-        if os.path.exists("/dev/video2"):
+		if os.path.exists("/dev/video2"):
 			devices.append("/dev/video2")
-        if os.path.exists("/dev/video3"):
+		if os.path.exists("/dev/video3"):
 			devices.append("/dev/video3")
-        self.videodev = wx.Choice(self, -1, choices=devices)
-        self.resolution = wx.Choice(self, -1, choices=["640x480", "1280x900"])
-        self.button_1 = wx.Button(self, -1, "Capture")
+		# begin wxGlade: Main.__init__
+		kwds["style"] = wx.DEFAULT_FRAME_STYLE
+		wx.Frame.__init__(self, *args, **kwds)
+		self.videodev = wx.Choice(self, -1, choices=devices)
+		self.resolution = wx.Choice(self, -1, choices=["1280x1024", "1280x900", "800x600", "640x480", "320x240"])
+		self.takephoto = wx.Button(self, -1, "Photo")
+		self.takevideo = wx.Button(self, -1, "Video")
+		self.closecam = wx.Button(self, -1, "Close Camera")
 
-        self.__set_properties()
-        self.__do_layout()
+		self.__set_properties()
+		self.__do_layout()
 
-        self.Bind(wx.EVT_CHOICE, self.printselection, self.videodev)
-        self.Bind(wx.EVT_BUTTON, self.takeShot, self.button_1)
-        # end wxGlade
-        self.camera = Camera.Camera()
+		self.Bind(wx.EVT_CHOICE, self.printselection, self.videodev)
+		self.Bind(wx.EVT_CHOICE, self.setResolution, self.resolution)
+		self.Bind(wx.EVT_BUTTON, self.takePhoto, self.takephoto)
+		self.Bind(wx.EVT_BUTTON, self.takeVideo, self.takevideo)
+		self.Bind(wx.EVT_BUTTON, self.closeCam, self.closecam)
+		# end wxGlade
+		self.camera = Camera.Camera()
 
-    def __set_properties(self):
-        # begin wxGlade: Main.__set_properties
-        self.SetTitle("Pyclops")
-        self.SetSize((640, 480))
-        self.SetBackgroundColour(wx.Colour(109, 0, 0))
-        self.SetForegroundColour(wx.Colour(109, 0, 0))
-        self.SetFont(wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.NORMAL, 0, ""))
-        self.videodev.SetBackgroundColour(wx.Colour(109, 0, 0))
-        self.videodev.SetSelection(0)
-        self.resolution.SetBackgroundColour(wx.Colour(109, 0, 0))
-        self.resolution.SetSelection(0)
-        self.button_1.SetBackgroundColour(wx.Colour(109, 0, 0))
-        # end wxGlade
+	def __set_properties(self):
+		# begin wxGlade: Main.__set_properties
+		self.SetTitle("Pyclops")
+		self.SetBackgroundColour(wx.Colour(109, 0, 0))
+		self.SetForegroundColour(wx.Colour(109, 0, 0))
+		self.SetFont(wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.NORMAL, 0, ""))
+		self.videodev.SetBackgroundColour(wx.Colour(109, 0, 0))
+		self.resolution.SetBackgroundColour(wx.Colour(109, 0, 0))
+		self.resolution.SetSelection(0)
+		self.takephoto.SetBackgroundColour(wx.Colour(109, 0, 0))
+		self.takevideo.SetBackgroundColour(wx.Colour(109, 0, 0))
+		self.closecam.SetBackgroundColour(wx.Colour(109, 0, 0))
+		# end wxGlade
 
-    def __do_layout(self):
-        # begin wxGlade: Main.__do_layout
-        sizer_1 = wx.BoxSizer(wx.VERTICAL)
-        sizer_1.Add(self.videodev, 0, wx.ALL|wx.ALIGN_RIGHT, 4)
-        sizer_1.Add(self.resolution, 0, wx.ALL|wx.ALIGN_RIGHT, 4)
-        sizer_1.Add(self.button_1, 0, wx.ALL|wx.ALIGN_RIGHT, 4)
-        self.SetSizer(sizer_1)
-        self.Layout()
-        # end wxGlade
+	def __do_layout(self):
+		# begin wxGlade: Main.__do_layout
+		sizer_1 = wx.BoxSizer(wx.VERTICAL)
+		sizer_1.Add(self.videodev, 0, wx.ALL|wx.ALIGN_RIGHT, 4)
+		sizer_1.Add(self.resolution, 0, wx.ALL|wx.ALIGN_RIGHT, 4)
+		sizer_1.Add(self.takephoto, 0, wx.ALL|wx.ALIGN_RIGHT, 4)
+		sizer_1.Add(self.takevideo, 0, wx.ALL|wx.ALIGN_RIGHT, 4)
+		sizer_1.Add(self.closecam, 0, wx.ALL|wx.ALIGN_RIGHT, 4)
+		self.SetSizer(sizer_1)
+		sizer_1.Fit(self)
+		self.Layout()
+		# end wxGlade
 	
-    def printselection(self, event): # wxGlade: Main.<event_handler>
-        print self.videodev.GetStringSelection()
-        print self.resolution.GetStringSelection()
-        event.Skip()
+	def printselection(self, event): # wxGlade: Main.<event_handler>
+		print self.videodev.GetStringSelection()
+		print self.resolution.GetStringSelection()
+		event.Skip()
 
-    def takeShot(self, event): # wxGlade: Main.<event_handler>
-        self.camera.takeShot()
-        event.Skip()
+	def takeShot(self, event): # wxGlade: Main.<event_handler>
+		
+		event.Skip()
+
+	def setResolution(self, event): # wxGlade: Main.<event_handler>
+		print "Event handler `setResolution' not implemented"
+		event.Skip()
+
+	def takePhoto(self, event): # wxGlade: Main.<event_handler>
+		self.camera.takePhoto()
+		event.Skip()
+
+	def takeVideo(self, event): # wxGlade: Main.<event_handler>
+		self.camera.takeVideo()
+		event.Skip()
+
+	def closeCam(self, event): # wxGlade: Main.<event_handler>
+		self.camera.closeCam()
+		event.Skip()
 
 # end of class Main
 

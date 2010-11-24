@@ -1,7 +1,7 @@
 Pyclops es una interfaz para tomar astrofotos con una webcam. El proyecto
 permite capturar fotos y secuencias, controlando los parametros de de la camara
 (al menos, brightness, contrast, gain).
-La interfaz usa un esquema de colores que permite usarlo en de noche sin
+La interfaz usa un esquema de colores que permite usarlo de noche sin
 disminuir la capacidad visual nocturna.
 
 Copyright (C) 2010  Joaquín Bogado <jbogado@linti.unlp.edu.ar>
