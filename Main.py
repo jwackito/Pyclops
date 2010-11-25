@@ -72,10 +72,6 @@ class Main(wx.Frame):
 		print self.resolution.GetStringSelection()
 		event.Skip()
 
-	def takeShot(self, event): # wxGlade: Main.<event_handler>
-		
-		event.Skip()
-
 	def setResolution(self, event): # wxGlade: Main.<event_handler>
 		print "Event handler `setResolution' not implemented"
 		event.Skip()
@@ -86,10 +82,12 @@ class Main(wx.Frame):
 
 	def takeVideo(self, event): # wxGlade: Main.<event_handler>
 		self.camera.takeVideo()
+		self.takevideo.Disable()
 		event.Skip()
 
 	def closeCam(self, event): # wxGlade: Main.<event_handler>
 		self.camera.closeCam()
+		self.takevideo.Enable()
 		event.Skip()
 
 # end of class Main
