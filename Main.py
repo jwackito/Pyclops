@@ -73,21 +73,38 @@ class Main(wx.Frame):
 		event.Skip()
 
 	def setResolution(self, event): # wxGlade: Main.<event_handler>
-		print "Event handler `setResolution' not implemented"
+		if self.resolution.GetStringSelection() == "1280x1024":
+			self.camera.setResolution(1280,1024)
+		if self.resolution.GetStringSelection() == "1280x900":
+			self.camera.setResolution(1280,900)
+		if self.resolution.GetStringSelection() == "800x600":
+			self.camera.setResolution(800,600)
+		if self.resolution.GetStringSelection() == "640x480":
+			self.camera.setResolution(640,480)
+		if self.resolution.GetStringSelection() == "320x240":
+			self.camera.setResolution(320,240)
 		event.Skip()
 
 	def takePhoto(self, event): # wxGlade: Main.<event_handler>
+		self.videodev.Disable()
+		self.resolution.Disable()
 		self.camera.takePhoto()
 		event.Skip()
 
 	def takeVideo(self, event): # wxGlade: Main.<event_handler>
-		self.camera.takeVideo()
+		self.videodev.Disable()
+		self.resolution.Disable()
+		self.takephoto.Disable()
 		self.takevideo.Disable()
+		self.camera.takeVideo()
 		event.Skip()
 
 	def closeCam(self, event): # wxGlade: Main.<event_handler>
-		self.camera.closeCam()
+		self.videodev.Enable()
+		self.resolution.Enable()
 		self.takevideo.Enable()
+		self.takephoto.Enable()
+		self.camera.closeCam()
 		event.Skip()
 
 # end of class Main

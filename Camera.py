@@ -11,13 +11,13 @@ class Camera:
 	def __init__(self, device = "/dev/video0", fps = 15, width = 640, height = 480):
 		''''''
 		self.device = device
-		self.SetCamDevice(self.device)
+		self.setCamDevice(self.device)
 		self.fps = fps
 		self.width = width
 		self.height = height
 		self.vthread = None
 		
-	def SetCamDevice(self, device):
+	def setCamDevice(self, device):
 		'''A piece of crap!'''
 		if device == "/dev/video0":
 			self.camera = cv.CaptureFromCAM(0)
@@ -28,18 +28,20 @@ class Camera:
 		if device == "/dev/video3":
 			self.camera = cv.CaptureFromCAM(3)
 
-	def SetFPS(self, fps):
+	def setFPS(self, fps):
 		self.fps = fps
 
-	def SetDimensions(self, width, height):
+	def setResolution(self, width, height):
 		self.width = width
 		self.height = height
+		cv.SetCaptureProperty(self.camera, cv.CV_CAP_PROP_FRAME_WIDTH,width)
+		cv.SetCaptureProperty(self.camera, cv.CV_CAP_PROP_FRAME_HEIGHT,height)
 
 	def takePhoto(self):
 		self.window = pygame.display.set_mode((self.width,self.height))
 		pygame.display.set_caption("Pyclops")
 		self.screen = pygame.display.get_surface()
-		im = self.get_image()
+		im = self.getImage()
 		pg_img = pygame.image.frombuffer(im.tostring(), cv.GetSize(im), "RGB")
 		self.screen.blit(pg_img, (0,0))
 		pygame.display.flip()
@@ -53,10 +55,9 @@ class Camera:
 			time.sleep(0.25)
 		pygame.display.quit()
 		self.camera = None
-		self.SetCamDevice(self.device)
-		#cv.ReleaseCapture(self.camera)
+		self.setCamDevice(self.device)
 
-	def get_image(self):
+	def getImage(self):
 		im = cv.QueryFrame(self.camera)
 		return im
 	
@@ -85,7 +86,7 @@ class VideoThread(Thread):
 					return
 				if event.type == KEYDOWN:
 					grabeframes = not grabeframes
-			im = self.camera.get_image()
+			im = self.camera.getImage()
 			if grabeframes:
 				cv.SaveImage("/tmp/shot"+str(i)+".jpg", im)
 				i+=1
