@@ -8,7 +8,7 @@ import time
 import cv
 
 class Camera:
-	def __init__(self, device = "/dev/video0", fps = 15, width = 640, height = 480):
+	def __init__(self, device = "/dev/video0", fps = 30, width = 640, height = 480):
 		''''''
 		self.device = device
 		self.setCamDevice(self.device)
@@ -19,6 +19,7 @@ class Camera:
 		
 	def setCamDevice(self, device):
 		'''A piece of crap!'''
+		self.camera = None
 		if device == "/dev/video0":
 			self.camera = cv.CaptureFromCAM(0)
 		if device == "/dev/video1":
